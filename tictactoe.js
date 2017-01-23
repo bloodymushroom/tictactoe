@@ -119,10 +119,22 @@ Game.prototype.turn = function() {
       console.log('you entered ', col);
 
       if (context.board.insert(row, col, turn)){
-        context.turnO = !context.turnO;
-        rl.close();
+        if (!context.board.hasWinner()) {
+          if (context.board.isFilled()) {
+            console.log('draw');
+            return 'draw';
+          } else {
+            context.turnO = !context.turnO;
+            rl.close();
+            context.turn();
+          }
+        } else {
+          console.log(turn, ' won!');
+          return;
+        }
       } else {
         rl.close();
+        context.turn();
       }
     })
   })
@@ -135,4 +147,4 @@ Game.prototype.turn = function() {
 // b1.insert(1, 1, 'O')
 
 var g1 = new Game();
-g1.play();
+g1.turn();
